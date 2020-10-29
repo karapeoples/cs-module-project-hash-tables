@@ -6,8 +6,6 @@ class HashTableEntry:
         self.key = key
         self.value = value
         self.next = None
-    def __repr__(self):
-        return f'{self.value} -> {self.next}'
 
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
@@ -26,10 +24,9 @@ class HashTable:
         self.capacity = MIN_CAPACITY
         self.size = 0
         self.buckets = [None] * self.capacity
-    def __repr__(self):
-        return str(self.capacity)
 
-    def get_num_slots(self):
+
+    #?def get_num_slots(self):
         """
         Return the length of the list you're using to hold the hash
         table data. (Not the number of items stored in the hash table,
@@ -40,7 +37,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        return len(self.buckets)
+        """ return len(self.buckets) """
 
     #def get_load_factor(self):
         """
@@ -50,7 +47,7 @@ class HashTable:
         """
         # Your code here
 
-#$💡💡REMINDER ADD MODULO to LIMIT HASH TABLE IN RETURN and .encode to UTF
+
     def fnv1(self, key):
         """
         FNV-1 Hash, 64-bit
@@ -59,6 +56,13 @@ class HashTable:
         """
 
         # Your code here
+        FNV_prime = 1099511628211
+        offset = 14695981039346656037
+        hash = offset + 0
+        for char in key:
+            hash = hash ^ ord(char)
+            hash = hash * FNV_prime
+        return hash
 
     def djb2(self, key):
         """
@@ -68,9 +72,7 @@ class HashTable:
         """
         # Your code here
         hash = 5381
-        # iterates characters in key,
         for character in key:
-            # ord: numerical value of that character -->
             hash = ((hash << 5) + hash) + ord(character)
         return hash & 0xFFFFFFFF
 
@@ -79,7 +81,7 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
+        return self.fnv1(key) % self.capacity
         return self.djb2(key) % self.capacity
 
     def put(self, key, value):
@@ -91,6 +93,11 @@ class HashTable:
         Implement this.
         """
         # Your code here
+
+
+        
+
+
         index = self.hash_index(key)
         node = HashTableEntry(key, value)
         key = self.buckets[index]
